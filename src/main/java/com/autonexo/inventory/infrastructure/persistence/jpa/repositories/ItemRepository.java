@@ -8,7 +8,6 @@ import java.util.Optional;
 public interface ItemRepository extends JpaRepository<Item, Long> {
     boolean existsByItemId(Long itemId);
 
-    Optional<Item> findByItemId(Long itemId);
-    Optional<Item> findByItemName(String itemName);
+    Optional<Item> findByName(String name);
     Optional<Item> findByInventoryId(Long inventoryId);
 }

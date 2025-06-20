@@ -1,6 +1,6 @@
 package com.autonexo.inventory.domain.model.commands;
 
-public record UpdateItemCommand(Long itemId, String name, String description, Long quantity) {
+public record UpdateItemCommand(Long itemId, String name, String description, Integer quantity) {
 
     public UpdateItemCommand {
         if (itemId == null || itemId <= 0) {

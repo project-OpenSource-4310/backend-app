@@ -19,7 +19,7 @@ public class Inventory extends AuditableAbstractAggregateRoot<Inventory> {
     @Column(unique = true)
     private String name;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Mechanic mechanic;
 
     @Column(name = "mechanic_id", insertable = false, updatable = false)
