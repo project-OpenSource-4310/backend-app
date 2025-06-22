@@ -10,6 +10,7 @@ import java.util.Optional;
 public interface ItemRepository extends JpaRepository<Item, Long> {
     boolean existsByName(String name);
     boolean existsByNameAndIdIsNot(String name, Long id);
+    void deleteAllByInventoryId(Long inventoryId);
 
     Optional<Item> findByName(String name);
     Optional<Item> findByInventoryId(Long inventoryId);
