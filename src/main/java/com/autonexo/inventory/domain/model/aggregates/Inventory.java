@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import org.apache.logging.log4j.util.Strings;
+import org.springframework.aot.hint.MemberCategory;
 
 @Getter
 @Entity
@@ -18,11 +19,9 @@ public class Inventory extends AuditableAbstractAggregateRoot<Inventory> {
     @Column(unique = true)
     private String name;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne
+    @JoinColumn(name = "mechanic_id", referencedColumnName = "id")
     private Mechanic mechanic;
-
-    @Column(name = "mechanic_id", insertable = false, updatable = false)
-    private Long mechanicId;
 
     /**
      * Create a new course
@@ -34,26 +33,23 @@ public class Inventory extends AuditableAbstractAggregateRoot<Inventory> {
     public Inventory(Mechanic mechanic, String name) {
         this.name = name;
         this.mechanic = mechanic;
-        this.mechanicId = mechanic.getId();
     }
 
-    public Inventory(Long mechanicId, String name) {
+    public Inventory(String name, Mechanic mechanic) {
         this.name = name;
-        this.mechanicId = mechanicId;
+        this.mechanic = mechanic;
     }
 
     public Inventory(CreateInventoryCommand command) {
         this.name = command.name();
-        this.mechanicId = command.mechanicId();
     }
 
     /**
      * Create a new course with the given title and description
      * @param name The title of the course
      */
-    public Inventory updateInformation(String name, Long mechanicId) {
+    public Inventory updateInformation(String name) {
         this.name = name;
-        this.mechanicId = mechanicId;
         return this;
     }
 

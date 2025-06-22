@@ -14,6 +14,6 @@ public class InventoryResourceFromEntityAssembler {
      * @return The {@link InventoryResource} resource that results from the conversion.
      */
     public static InventoryResource toResourceFromEntity(Inventory entity) {
-        return new InventoryResource(entity.getId(), entity.getName(), entity.getMechanicId());
+        return new InventoryResource(entity.getId(), entity.getName());
     }
 }

@@ -14,7 +14,7 @@ public record UpdateItemResource(String name, String description, Integer quanti
             throw new IllegalArgumentException("Description is required");
         }
 
-        if (quantity == null || quantity >= 0) {
+        if (quantity == null || quantity <= 0) {
             throw new IllegalArgumentException("Quantity is required");
         }
     }

@@ -9,7 +9,7 @@ public record CreateInventoryResource(String name, Long mechanicId) {
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("Name is required");
         }
-        if (mechanicId == null || mechanicId > 0) {
+        if (mechanicId == null || mechanicId < 0) {
             throw new IllegalArgumentException("MechanicId is required");
         }
     }

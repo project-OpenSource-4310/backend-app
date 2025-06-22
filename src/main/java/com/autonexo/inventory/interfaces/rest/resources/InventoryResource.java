@@ -1,4 +1,6 @@
 package com.autonexo.inventory.interfaces.rest.resources;
 
-public record InventoryResource(Long id, String name, Long mechanicId) {
+import com.autonexo.user.domain.model.entities.Mechanic;
+
+public record InventoryResource(Long id, String name) {
 }

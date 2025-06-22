@@ -28,5 +28,6 @@ public interface InventoryRepository extends JpaRepository<Inventory, Long>
      * @return True if the user exists, false otherwise.
      */
     boolean existsByName(String name);
+    boolean existsByNameAndIdIsNot(String name, Long id);
 
 }
