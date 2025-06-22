@@ -28,7 +28,7 @@ public interface InventoryQueryService {
      * @param query the {@link GetAllInventoriesByMechanicIdQuery} query
      * @return an {@link Optional} of {@link Inventory} entity
      */
-    Optional<Inventory> handle(GetAllInventoriesByMechanicIdQuery query);
+    List<Inventory> handle(GetAllInventoriesByMechanicIdQuery query);
 
 
 }

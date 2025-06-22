@@ -38,12 +38,12 @@ public class InventoryQueryServiceImpl implements InventoryQueryService {
     /**
      * This method is used to handle {@link GetAllInventoriesByMechanicIdQuery} query.
      * @param query {@link GetAllInventoriesByMechanicIdQuery} instance.
-     * @return {@link Optional} of {@link Inventory} instance.
+     * @return {@link List} of {@link Inventory} instance.
      * @see GetAllInventoriesByMechanicIdQuery
      */
     @Override
-    public Optional<Inventory> handle(GetAllInventoriesByMechanicIdQuery query) {
-        return inventoryRepository.findByMechanicId(query.mechanicId());
+    public List<Inventory> handle(GetAllInventoriesByMechanicIdQuery query) {
+        return inventoryRepository.findAllByMechanicId(query.mechanicId());
     }
 
     /**

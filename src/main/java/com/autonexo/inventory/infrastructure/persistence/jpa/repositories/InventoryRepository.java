@@ -4,6 +4,7 @@ import com.autonexo.inventory.domain.model.aggregates.Inventory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -14,12 +15,12 @@ import java.util.Optional;
 public interface InventoryRepository extends JpaRepository<Inventory, Long>
 {
     /**
-     * This method is responsible for finding the user by username.
-     * @param name The username.
-     * @return The user object.
+     * This method is responsible for finding the user by name.
+     * @param name The name.
+     * @return The Inventory object.
      */
     Optional<Inventory> findByName(String name);
-    Optional<Inventory> findByMechanicId(Long mechanicId);
+    List<Inventory> findAllByMechanicId(Long mechanicId);
 
     /**
      * This method is responsible for checking if the user exists by username.
