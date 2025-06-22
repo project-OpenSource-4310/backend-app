@@ -14,7 +14,7 @@ public interface ItemCommandService {
      * @param command the {@link CreateItemInInventoryCommand} command
      * @return an {@link Optional} of {@link ImmutablePair} of {@link Item} and {@link String}
      */
-    Optional<ImmutablePair<Item, String>> handle(CreateItemInInventoryCommand command);
+    Optional<Item> handle(CreateItemInInventoryCommand command);
 
     /**
      * Handle Update command
@@ -28,5 +28,5 @@ public interface ItemCommandService {
      * @param command the {@link DeleteItemCommand} command
      * @return an {@link Optional} of {@link Item} entity
      */
-    Optional<Item> handle(DeleteItemCommand command);
+    void handle(DeleteItemCommand command);
 }

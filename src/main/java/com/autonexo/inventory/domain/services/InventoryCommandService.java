@@ -11,10 +11,12 @@ import java.util.Optional;
 public interface InventoryCommandService {
     /**
      * Handle Creates command
+     *
      * @param command the {@link CreateInventoryCommand} command
-     * @return an {@link Optional} of {@link ImmutablePair} of {@link Inventory} and {@link String}
+     * @return the created inventory
+     * @see CreateInventoryCommand
      */
-    Optional<ImmutablePair<Inventory, String>> handle(CreateInventoryCommand command);
+    Optional<Inventory> handle(CreateInventoryCommand command);
 
     /**
      * Handle Update command
@@ -28,7 +30,9 @@ public interface InventoryCommandService {
      * @param command the {@link DeleteInventoryCommand} command
      * @return an {@link Optional} of {@link Inventory} entity
      */
-    Optional<Inventory> handle(DeleteInventoryCommand command);
+    void handle(DeleteInventoryCommand command);
+
+
 
 
 }

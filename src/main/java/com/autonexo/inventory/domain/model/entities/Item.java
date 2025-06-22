@@ -1,6 +1,7 @@
 package com.autonexo.inventory.domain.model.entities;
 
 import com.autonexo.inventory.domain.model.aggregates.Inventory;
+import com.autonexo.inventory.domain.model.commands.CreateItemInInventoryCommand;
 import com.autonexo.shared.domain.model.entities.AuditableModel;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -35,6 +36,13 @@ public class Item extends AuditableModel {
 
     public Item() {
 
+    }
+
+    public Item(CreateItemInInventoryCommand command) {
+        this.inventoryId = command.inventoryId();
+        this.name = command.name();
+        this.description = command.description();
+        this.quantity = command.quantity();
     }
 
     public int getItemInventoryId(int id) {

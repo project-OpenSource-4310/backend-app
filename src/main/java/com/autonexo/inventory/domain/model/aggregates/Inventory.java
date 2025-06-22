@@ -1,5 +1,6 @@
 package com.autonexo.inventory.domain.model.aggregates;
 
+import com.autonexo.inventory.domain.model.commands.CreateInventoryCommand;
 import com.autonexo.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
 import com.autonexo.user.domain.model.entities.Mechanic;
 import jakarta.persistence.*;
@@ -34,6 +35,16 @@ public class Inventory extends AuditableAbstractAggregateRoot<Inventory> {
         this.name = name;
         this.mechanic = mechanic;
         this.mechanicId = mechanic.getId();
+    }
+
+    public Inventory(Long mechanicId, String name) {
+        this.name = name;
+        this.mechanicId = mechanicId;
+    }
+
+    public Inventory(CreateInventoryCommand command) {
+        this.name = command.name();
+        this.mechanicId = command.mechanicId();
     }
 
     /**
