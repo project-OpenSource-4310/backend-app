@@ -19,7 +19,7 @@ public interface UserCommandService {
      * @param command the {@link LoginCommand} command
      * @return an {@link Optional} of {@link ImmutablePair} of {@link User} and {@link String}
      */
-    Optional<ImmutablePair<User, String>> handle(LoginCommand command);
+    Optional<User> handle(LoginCommand command);
 
     /**
      * Handle register command

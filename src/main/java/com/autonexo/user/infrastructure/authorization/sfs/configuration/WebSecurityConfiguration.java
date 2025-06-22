@@ -1,11 +1,11 @@
 package com.autonexo.user.infrastructure.authorization.sfs.configuration;
 
-import com.autonexo.user.infrastructure.authorization.sfs.pipeline.BearerAuthorizationRequestFilter;
 import com.autonexo.user.infrastructure.hashing.bcrypt.BCryptHashingService;
-import com.autonexo.user.infrastructure.tokens.jwt.BearerTokenService;
+import jakarta.servlet.*;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -15,6 +15,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.filter.GenericFilterBean;
+
+import java.io.IOException;
 
 /**
  * Web Security Configuration.
@@ -30,21 +34,9 @@ public class WebSecurityConfiguration {
 
     private final UserDetailsService userDetailsService;
 
-    private final BearerTokenService tokenService;
-
     private final BCryptHashingService hashingService;
 
     private final AuthenticationEntryPoint unauthorizedRequestHandler;
-
-    /**
-     * This method creates the Bearer Authorization Request Filter.
-     * @return The Bearer Authorization Request Filter
-     * @see BearerAuthorizationRequestFilter
-     */
-    @Bean
-    public BearerAuthorizationRequestFilter authorizationRequestFilter() {
-        return new BearerAuthorizationRequestFilter(tokenService, userDetailsService);
-    }
 
     /**
      * This method creates the authentication manager.
@@ -94,8 +86,13 @@ public class WebSecurityConfiguration {
                 )
                 .csrf(csrf -> csrf.disable());
 
+        // Desactivar el filtro de autorización
+        http.addFilterBefore(new EmptyFilter(), UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
+
     }
+
 //    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 //        http.cors(configurer -> configurer.configurationSource(_ -> {
 //            var cors = new CorsConfiguration();
@@ -122,16 +119,24 @@ public class WebSecurityConfiguration {
 //
 //    }
 
+    @Order(1)
+    private static class EmptyFilter implements Filter {
+        @Override
+        public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+                throws IOException, ServletException {
+            chain.doFilter(request, response);
+        }
+    }
+
+
     /**
      * This is the constructor of the class.
      * @param userDetailsService The user details service
-     * @param tokenService The token service
      * @param hashingService The hashing service
      * @param authenticationEntryPoint The authentication entry point
      */
-    public WebSecurityConfiguration(@Qualifier("defaultUserDetailsService") UserDetailsService userDetailsService, BearerTokenService tokenService, BCryptHashingService hashingService, AuthenticationEntryPoint authenticationEntryPoint) {
+    public WebSecurityConfiguration(@Qualifier("defaultUserDetailsService") UserDetailsService userDetailsService, BCryptHashingService hashingService, AuthenticationEntryPoint authenticationEntryPoint) {
         this.userDetailsService = userDetailsService;
-        this.tokenService = tokenService;
         this.hashingService = hashingService;
         this.unauthorizedRequestHandler = authenticationEntryPoint;
     }
