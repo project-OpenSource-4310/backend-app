@@ -1,8 +1,6 @@
 package com.autonexo.inventory.domain.model.aggregates;
 
-import com.autonexo.inventory.domain.model.commands.CreateInventoryCommand;
 import com.autonexo.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
-import com.autonexo.user.domain.model.aggregates.User;
 import com.autonexo.user.domain.model.entities.Mechanic;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -32,6 +30,12 @@ public class Inventory extends AuditableAbstractAggregateRoot<Inventory> {
         this.name = Strings.EMPTY;
     }
 
+    public Inventory(Mechanic mechanic, String name) {
+        this.name = name;
+        this.mechanic = mechanic;
+        this.mechanicId = mechanic.getId();
+    }
+
     /**
      * Create a new course with the given title and description
      * @param name The title of the course
@@ -42,13 +46,4 @@ public class Inventory extends AuditableAbstractAggregateRoot<Inventory> {
         return this;
     }
 
-    /**
-     * Create a new course with information from the command
-     * @param command The command to create the course
-     * @see CreateInventoryCommand
-     */
-    public Inventory(CreateInventoryCommand command) {
-        this.name = command.name();
-        this.mechanicId = command.mechanicId();
-    }
 }
