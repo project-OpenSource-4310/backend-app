@@ -22,6 +22,7 @@ public interface InventoryRepository extends JpaRepository<Inventory, Long>
     Optional<Inventory> findByName(String name);
     List<Inventory> findAllByMechanicId(Long mechanicId);
 
+
     /**
      * This method is responsible for checking if the user exists by username.
      * @param name The username.

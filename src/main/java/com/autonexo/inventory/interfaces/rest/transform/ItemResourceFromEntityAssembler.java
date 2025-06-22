@@ -11,6 +11,6 @@ public class ItemResourceFromEntityAssembler {
      * @return The {@link ItemResource} resource that results from the conversion.
      */
     public static ItemResource toResourceFromEntity(Item entity) {
-        return new ItemResource(entity.getId(), entity.getName(), entity.getDescription(), entity.getQuantity(), entity.getInventoryId());
+        return new ItemResource(entity.getId(), entity.getName(), entity.getDescription(), entity.getQuantity());
     }
 }

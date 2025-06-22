@@ -100,12 +100,12 @@ public class InventoryCommandServiceImpl implements InventoryCommandService {
      */
     public void handle(DeleteInventoryCommand command) {
         if (!inventoryRepository.existsById(command.inventoryId())) {
-            throw new IllegalArgumentException("Course with id %s not found".formatted(command.inventoryId()));
+            throw new IllegalArgumentException("Inventory with id %s not found".formatted(command.inventoryId()));
         }
         try {
             inventoryRepository.deleteById(command.inventoryId());
         } catch (Exception e) {
-            throw new IllegalArgumentException("Error while deleting course: %s".formatted(e.getMessage()));
+            throw new IllegalArgumentException("Error while deleting inventory: %s".formatted(e.getMessage()));
         }
     }
 }

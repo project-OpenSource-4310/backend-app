@@ -28,5 +28,5 @@ public interface ItemQueryService {
      * @param query the {@link GetAllItemsByInventoryIdQuery} query
      * @return an {@link Optional} of {@link Item} entity
      */
-    Optional<Item> handle(GetAllItemsByInventoryIdQuery query);
+    List<Item> handle(GetAllItemsByInventoryIdQuery query);
 }

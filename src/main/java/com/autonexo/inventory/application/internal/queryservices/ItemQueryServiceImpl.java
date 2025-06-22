@@ -36,12 +36,12 @@ public class ItemQueryServiceImpl implements ItemQueryService {
     /**
      * This method is used to handle {@link GetAllItemsByInventoryIdQuery} query.
      * @param query {@link GetAllItemsByInventoryIdQuery} instance.
-     * @return {@link Optional} of {@link Item} instance.
+     * @return {@link List} of {@link Item} instance.
      * @see GetAllItemsByInventoryIdQuery
      */
     @Override
-    public Optional<Item> handle(GetAllItemsByInventoryIdQuery query) {
-        return itemRepository.findByInventoryId(query.inventoryId());
+    public List<Item> handle(GetAllItemsByInventoryIdQuery query) {
+        return itemRepository.findAllByInventoryId(query.inventoryId());
     }
 
     /**
