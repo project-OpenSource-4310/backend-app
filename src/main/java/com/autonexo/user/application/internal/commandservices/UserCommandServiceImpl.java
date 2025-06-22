@@ -1,7 +1,6 @@
 package com.autonexo.user.application.internal.commandservices;
 
 import com.autonexo.user.application.internal.outboundservices.hashing.HashingService;
-import com.autonexo.user.application.internal.outboundservices.tokens.TokenService;
 import com.autonexo.user.domain.model.aggregates.User;
 import com.autonexo.user.domain.model.commands.LoginCommand;
 import com.autonexo.user.domain.model.commands.RegisterCommand;
@@ -24,12 +23,10 @@ public class UserCommandServiceImpl implements UserCommandService {
 
     private final UserRepository userRepository;
     private final HashingService hashingService;
-    private final TokenService tokenService;
 
-    public UserCommandServiceImpl(UserRepository userRepository, HashingService hashingService, TokenService tokenService) {
+    public UserCommandServiceImpl(UserRepository userRepository, HashingService hashingService) {
         this.userRepository = userRepository;
         this.hashingService = hashingService;
-        this.tokenService = tokenService;
     }
 
     /**
@@ -42,14 +39,13 @@ public class UserCommandServiceImpl implements UserCommandService {
      * @throws RuntimeException if the user is not found or the password is invalid
      */
     @Override
-    public Optional<ImmutablePair<User, String>> handle(LoginCommand command) {
+    public Optional<User> handle(LoginCommand command) {
         var user = userRepository.findByUsername(command.username());
         if (user.isEmpty())
             throw new RuntimeException("User not found");
         if (!hashingService.matches(command.password(), user.get().getPassword()))
             throw new RuntimeException("Invalid password");
-        var token = tokenService.generateToken(user.get().getUsername());
-        return Optional.of(ImmutablePair.of(user.get(), token));
+        return Optional.of(user.get());
     }
 
     /**
