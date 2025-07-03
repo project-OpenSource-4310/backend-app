@@ -29,6 +29,7 @@ public class Maintenance {
     @Column(nullable = false)
     private Float totalCost;
 
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private StatusMaintenance status;
 
