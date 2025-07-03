@@ -1,7 +1,7 @@
 package com.autonexo.maintenance.application.queriesServices;
 
 import com.autonexo.maintenance.domain.models.aggregates.Maintenance;
-import com.autonexo.maintenance.domain.repositories.MaintenanceRepository;
+import com.autonexo.maintenance.infrastructure.persistence.jpa.repositories.MaintenanceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

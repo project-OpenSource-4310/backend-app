@@ -3,7 +3,7 @@ package com.autonexo.vehicles.application.commandServices;
 import com.autonexo.vehicles.domain.exceptions.RegisterCarExceptions;
 import com.autonexo.vehicles.domain.models.aggregates.Cars;
 import com.autonexo.vehicles.domain.models.commands.RegisterCarCommand;
-import com.autonexo.vehicles.domain.repositories.CarRepository;
+import com.autonexo.vehicles.infrastructure.persistence.jpa.repositories.CarRepository;
 import org.springframework.stereotype.Service;
 
 @Service

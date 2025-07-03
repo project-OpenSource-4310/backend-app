@@ -2,7 +2,7 @@ package com.autonexo.vehicles.application.commandServices;
 
 import com.autonexo.vehicles.domain.exceptions.DeleteCarNotFoundException;
 import com.autonexo.vehicles.domain.models.commands.DeleteCarByIdCommand;
-import com.autonexo.vehicles.domain.repositories.CarRepository;
+import com.autonexo.vehicles.infrastructure.persistence.jpa.repositories.CarRepository;
 
 import org.springframework.stereotype.Service;
 

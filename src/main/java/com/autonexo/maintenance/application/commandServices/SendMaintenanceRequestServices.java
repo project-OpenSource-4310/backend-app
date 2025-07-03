@@ -2,7 +2,7 @@ package com.autonexo.maintenance.application.commandServices;
 
 import com.autonexo.maintenance.domain.models.commands.SendMaintenanceRequestCommand;
 import com.autonexo.maintenance.domain.models.entities.MaintenanceRequest;
-import com.autonexo.maintenance.domain.repositories.MaintenanceRequestRepository;
+import com.autonexo.maintenance.infrastructure.persistence.jpa.repositories.MaintenanceRequestRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
