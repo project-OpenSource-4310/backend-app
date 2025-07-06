@@ -84,6 +84,23 @@ public class CarsController {
     }
 
     /**
+     * Get vehicle by plate
+     *
+     * @param id The vehicle plate
+     * @return The resource for the vehicle
+     */
+    @GetMapping("/vehicle/{id}")
+    @Operation(summary = "Get vehicle by plate", description = "Get vehicle by plate")
+    public ResponseEntity<Cars> getCarById(@PathVariable Integer id) {
+        Optional<Cars> car = carRepository.findByCarId(id);
+        if (car.isPresent()) {
+            return new ResponseEntity<>(car.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    /**
      * Delete vehicle
      *
      * @param id The vehicle id
