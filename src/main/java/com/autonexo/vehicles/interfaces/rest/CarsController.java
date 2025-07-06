@@ -84,13 +84,13 @@ public class CarsController {
     }
 
     /**
-     * Get vehicle by plate
+     * Get a vehicle by id
      *
-     * @param id The vehicle plate
+     * @param id The vehicle id
      * @return The resource for the vehicle
      */
     @GetMapping("/vehicle/{id}")
-    @Operation(summary = "Get vehicle by plate", description = "Get vehicle by plate")
+    @Operation(summary = "Get vehicle by id", description = "Get vehicle by id")
     public ResponseEntity<Cars> getCarById(@PathVariable Integer id) {
         Optional<Cars> car = carRepository.findByCarId(id);
         if (car.isPresent()) {
