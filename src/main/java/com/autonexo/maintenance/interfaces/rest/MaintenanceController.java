@@ -7,6 +7,7 @@ import com.autonexo.maintenance.domain.models.aggregates.Maintenance;
 import com.autonexo.maintenance.domain.models.commands.CreateMaintenanceCommand;
 import com.autonexo.maintenance.domain.models.commands.SendMaintenanceRequestCommand;
 import com.autonexo.maintenance.domain.models.entities.MaintenanceRequest;
+import com.autonexo.vehicles.application.commandServices.CarRegistrationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +26,11 @@ public class MaintenanceController {
     private final SendMaintenanceRequestServices sendMaintenanceRequestServices;
     private final GetMaintenanceServices getMaintenanceServices;
 
-    //  Crear mantenimiento
+    /**
+     * Create a new maintenance
+     * The {@link CreateMaintenanceServices} instance
+     * @return resource for the created maintenance
+     */
     @PostMapping
     @Operation(summary = "Create a new maintenance", description = "Create a new maintenance")
     public ResponseEntity<Maintenance> createMaintenance(@RequestBody CreateMaintenanceCommand command) {
@@ -33,7 +38,11 @@ public class MaintenanceController {
         return ResponseEntity.ok(created);
     }
 
-    //  Enviar solicitud de mantenimiento
+    /**
+     * Create a new request
+     * The {@link SendMaintenanceRequestServices} instance
+     * @return resource for the created request
+     */
     @PostMapping("/request")
     @Operation(summary = "Create a new maintenance request", description = "Create a new maintenance request")
     public ResponseEntity<MaintenanceRequest> sendRequest(@RequestBody SendMaintenanceRequestCommand command) {
@@ -41,14 +50,23 @@ public class MaintenanceController {
         return ResponseEntity.ok(request);
     }
 
-    //  Obtener todos los mantenimientos
+    /**
+     * Get all maintenances
+     *
+     * @return The list of resources for all maintenances
+     */
     @Operation(summary = "Get all maintenances", description = "Get all maintenances")
     @GetMapping
     public ResponseEntity<List<Maintenance>> getAllMaintenances() {
         return ResponseEntity.ok(getMaintenanceServices.findAll());
     }
 
-    //  Obtener un mantenimiento por ID
+    /**
+     * Get maintenance by id
+     *
+     * @param id The maintenance id
+     * @return The resource for the maintenance
+     */
     @GetMapping("/{id}")
     @Operation(summary = "Get maintenance by id", description = "Get all maintenance by id")
     public ResponseEntity<Maintenance> getMaintenanceById(@PathVariable Integer id) {

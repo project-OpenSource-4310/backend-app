@@ -25,5 +25,4 @@ public class MaintenanceRequest {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private StatusRequest status;
-
 }
