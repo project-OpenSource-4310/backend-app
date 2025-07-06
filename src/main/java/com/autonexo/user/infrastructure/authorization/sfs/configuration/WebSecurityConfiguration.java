@@ -1,6 +1,8 @@
 package com.autonexo.user.infrastructure.authorization.sfs.configuration;
 
+import com.autonexo.user.infrastructure.authorization.sfs.pipeline.BearerAuthorizationRequestFilter;
 import com.autonexo.user.infrastructure.hashing.bcrypt.BCryptHashingService;
+import com.autonexo.user.infrastructure.tokens.jwt.BearerTokenService;
 import jakarta.servlet.*;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -11,14 +13,17 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.filter.GenericFilterBean;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Web Security Configuration.
@@ -34,9 +39,21 @@ public class WebSecurityConfiguration {
 
     private final UserDetailsService userDetailsService;
 
+    private final BearerTokenService tokenService;
+
     private final BCryptHashingService hashingService;
 
     private final AuthenticationEntryPoint unauthorizedRequestHandler;
+
+    /**
+     * This method creates the Bearer Authorization Request Filter.
+     * @return The Bearer Authorization Request Filter
+     * @see BearerAuthorizationRequestFilter
+     */
+    @Bean
+    public BearerAuthorizationRequestFilter authorizationRequestFilter() {
+        return new BearerAuthorizationRequestFilter(tokenService, userDetailsService);
+    }
 
     /**
      * This method creates the authentication manager.
@@ -93,31 +110,31 @@ public class WebSecurityConfiguration {
 
     }
 
-//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//        http.cors(configurer -> configurer.configurationSource(_ -> {
-//            var cors = new CorsConfiguration();
-//            cors.setAllowedOrigins(List.of("*"));
-//            cors.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
-//            cors.setAllowedHeaders(List.of("*"));
-//            return cors;
-//        }));
-//        http.csrf(csrfConfigurer -> csrfConfigurer.disable())
-//                .exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(unauthorizedRequestHandler))
-//                .sessionManagement( customizer -> customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//                .authorizeHttpRequests(authorizeRequests -> authorizeRequests
-//                        .requestMatchers(
-//                                "/api/v1/authentication/**",
-//                                "/v3/api-docs/**",
-//                                "/swagger-ui.html",
-//                                "/swagger-ui/**",
-//                                "/swagger-resources/**",
-//                                "/webjars/**").permitAll()
-//                        .anyRequest().authenticated());
-//        http.authenticationProvider(authenticationProvider());
-//        http.addFilterBefore(authorizationRequestFilter(), UsernamePasswordAuthenticationFilter.class);
-//        return http.build();
-//
-//    }
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.cors(configurer -> configurer.configurationSource(request -> {
+            var cors = new CorsConfiguration();
+            cors.setAllowedOrigins(List.of("*"));
+            cors.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
+            cors.setAllowedHeaders(List.of("*"));
+            return cors;
+        }));
+        http.csrf(csrfConfigurer -> csrfConfigurer.disable())
+                .exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(unauthorizedRequestHandler))
+                .sessionManagement( customizer -> customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(authorizeRequests -> authorizeRequests
+                        .requestMatchers(
+                                "/api/v1/authentication/**",
+                                "/v3/api-docs/**",
+                                "/swagger-ui.html",
+                                "/swagger-ui/**",
+                                "/swagger-resources/**",
+                                "/webjars/**").permitAll()
+                        .anyRequest().authenticated());
+        http.authenticationProvider(authenticationProvider());
+        http.addFilterBefore(authorizationRequestFilter(), UsernamePasswordAuthenticationFilter.class);
+        return http.build();
+
+    }
 
     @Order(1)
     private static class EmptyFilter implements Filter {
@@ -135,8 +152,9 @@ public class WebSecurityConfiguration {
      * @param hashingService The hashing service
      * @param authenticationEntryPoint The authentication entry point
      */
-    public WebSecurityConfiguration(@Qualifier("defaultUserDetailsService") UserDetailsService userDetailsService, BCryptHashingService hashingService, AuthenticationEntryPoint authenticationEntryPoint) {
+    public WebSecurityConfiguration(@Qualifier("defaultUserDetailsService") UserDetailsService userDetailsService, BearerTokenService tokenService,BCryptHashingService hashingService, AuthenticationEntryPoint authenticationEntryPoint) {
         this.userDetailsService = userDetailsService;
+        this.tokenService = tokenService;
         this.hashingService = hashingService;
         this.unauthorizedRequestHandler = authenticationEntryPoint;
     }
