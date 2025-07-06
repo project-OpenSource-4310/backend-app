@@ -103,11 +103,7 @@ public class WebSecurityConfiguration {
                 )
                 .csrf(csrf -> csrf.disable());
 
-        // Desactivar el filtro de autorización
-        http.addFilterBefore(new EmptyFilter(), UsernamePasswordAuthenticationFilter.class);
-
         return http.build();
-
     }
 
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -135,16 +131,6 @@ public class WebSecurityConfiguration {
         return http.build();
 
     }
-
-    @Order(1)
-    private static class EmptyFilter implements Filter {
-        @Override
-        public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-                throws IOException, ServletException {
-            chain.doFilter(request, response);
-        }
-    }
-
 
     /**
      * This is the constructor of the class.
