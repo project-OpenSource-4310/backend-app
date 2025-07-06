@@ -96,16 +96,6 @@ public class WebSecurityConfiguration {
      */
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .authorizeHttpRequests(auth -> auth
-                        .anyRequest().permitAll()
-                )
-                .csrf(csrf -> csrf.disable());
-
-        return http.build();
-    }
-
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors(configurer -> configurer.configurationSource(request -> {
             var cors = new CorsConfiguration();
