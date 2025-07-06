@@ -43,7 +43,7 @@ public class CarsController {
      * The {@link CarRegistrationService} instance
      * @return resource for the created vehicle
      */
-    @PostMapping("/api/v1/vehicles/vehicle")
+    @PostMapping("/vehicle")
     @Operation(summary = "Register a new vehicle", description = "Register a new vehicle")
     public ResponseEntity<Cars> registerCar(@RequestBody RegisterCarCommand command) {
         try {
@@ -89,7 +89,7 @@ public class CarsController {
      * @param id The vehicle id
      * @return The resource for the vehicle
      */
-    @GetMapping("/vehicle/{id}")
+    @GetMapping("/{id}")
     @Operation(summary = "Get vehicle by id", description = "Get vehicle by id")
     public ResponseEntity<Cars> getCarById(@PathVariable Integer id) {
         Optional<Cars> car = carRepository.findByCarId(id);
