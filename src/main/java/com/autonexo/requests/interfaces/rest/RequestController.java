@@ -3,6 +3,10 @@ package com.autonexo.requests.interfaces.rest;
 import com.autonexo.requests.domain.model.aggregates.Request;
 import com.autonexo.requests.infraestructure.persistance.jpa.repositories.RequestRepository;
 import com.autonexo.requests.interfaces.rest.resources.CreateRequestResource;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +18,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @RequestMapping(value = "/api/v1/requests", produces = APPLICATION_JSON_VALUE)
+@Tag(name = "Requests", description = "Available Request Endpoints")
 public class RequestController {
 
     private final RequestRepository requestRepository;
@@ -22,8 +27,12 @@ public class RequestController {
         this.requestRepository = requestRepository;
     }
 
-    // POST: Crear una nueva solicitud
     @PostMapping
+    @Operation(summary = "Create a new request", description = "Create a new request")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Request created"),
+            @ApiResponse(responseCode = "400", description = "Invalid input"),
+            @ApiResponse(responseCode = "404", description = "Request not found")})
     public ResponseEntity<Request> createRequest(@RequestBody CreateRequestResource resource) {
         Request request = new Request(
                 resource.type(),
@@ -39,32 +48,44 @@ public class RequestController {
         return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }
 
-    // GET: Obtener todas las solicitudes
     @GetMapping
+    @Operation(summary = "Get all requests", description = "Get all requests")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Requests found"),
+            @ApiResponse(responseCode = "404", description = "Requests not found")})
     public ResponseEntity<List<Request>> getAllRequests() {
         List<Request> requests = requestRepository.findAll();
         if (requests.isEmpty()) return ResponseEntity.noContent().build();
         return ResponseEntity.ok(requests);
     }
 
-    // GET: Obtener solicitud por ID
     @GetMapping("/{id}")
+    @Operation(summary = "Get request by id", description = "Get request by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Request found"),
+            @ApiResponse(responseCode = "404", description = "Request not found")})
     public ResponseEntity<Request> getRequestById(@PathVariable Long id) {
         Optional<Request> request = requestRepository.findById(id);
         return request.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // GET: Obtener solicitudes por mechanicId
     @GetMapping("/mechanic/{mechanicId}")
+    @Operation(summary = "Get request by mechanic id", description = "Get request by mechanic id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Request found"),
+            @ApiResponse(responseCode = "404", description = "Request not found")})
     public ResponseEntity<List<Request>> getRequestsByMechanicId(@PathVariable Long mechanicId) {
         List<Request> requests = requestRepository.findByMechanicId(mechanicId);
         if (requests.isEmpty()) return ResponseEntity.noContent().build();
         return ResponseEntity.ok(requests);
     }
 
-    // GET: Obtener solicitudes por driverId
     @GetMapping("/driver/{driverId}")
+    @Operation(summary = "Get request by driver id", description = "Get request by driver id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Request found"),
+            @ApiResponse(responseCode = "404", description = "Request not found")})
     public ResponseEntity<List<Request>> getRequestsByDriverId(@PathVariable Long driverId) {
         List<Request> requests = requestRepository.findByDriverId(driverId);
         if (requests.isEmpty()) return ResponseEntity.noContent().build();
