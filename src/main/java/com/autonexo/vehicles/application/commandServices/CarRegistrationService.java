@@ -10,8 +10,6 @@ import com.autonexo.vehicles.domain.models.commands.RegisterCarCommand;
 import com.autonexo.vehicles.infrastructure.persistence.jpa.repositories.CarRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 public class CarRegistrationService {
 
@@ -30,28 +28,30 @@ public class CarRegistrationService {
     }
 
     public Cars handle(RegisterCarCommand command) {
+        // Verificar si la placa ya está registrada
         if (carRepository.existsByPlate(command.plate())) {
             throw new RegisterCarExceptions();
         }
 
-
+        // Obtener Driver (obligatorio)
         Driver driver = driverRepository.findById(command.driverId())
-                .orElseThrow(() -> new RegisterCarExceptions());
+                .orElseThrow(RegisterCarExceptions::new);
 
-
+        // Obtener Mechanic si fue enviado (opcional)
         Mechanic mechanic = null;
         if (command.mechanicId() != null) {
-            Optional<Mechanic> optionalMechanic = mechanicRepository.findById(command.mechanicId());
-            mechanic = optionalMechanic.orElse(null);
+            mechanic = mechanicRepository.findById(command.mechanicId())
+                    .orElseThrow(RegisterCarExceptions::new);
         }
 
+        // Crear entidad Cars con objetos completos
         Cars car = Cars.builder()
                 .plate(command.plate())
                 .make(command.make())
                 .model(command.model())
                 .year(command.year())
                 .driver(driver)
-                .mechanic(mechanic) // puede ser null
+                .mechanic(mechanic)
                 .build();
 
         return carRepository.save(car);

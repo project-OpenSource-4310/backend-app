@@ -15,7 +15,7 @@ import lombok.*;
 public class Cars {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(nullable = false, unique = true)
@@ -37,4 +37,13 @@ public class Cars {
     @ManyToOne(optional = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "mechanic_id", referencedColumnName = "id")
     private Mechanic mechanic;
+
+    // 🔥 Métodos necesarios para usar DTOs simples
+    public Long getDriverId() {
+        return driver != null ? driver.getId() : null;
+    }
+
+    public Long getMechanicId() {
+        return mechanic != null ? mechanic.getId() : null;
+    }
 }
