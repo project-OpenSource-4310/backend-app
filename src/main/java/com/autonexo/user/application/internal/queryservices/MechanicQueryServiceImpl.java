@@ -3,7 +3,7 @@ package com.autonexo.user.application.internal.queryservices;
 import com.autonexo.user.domain.model.entities.Mechanic;
 import com.autonexo.user.domain.model.queries.GetAllMechanicsQuery;
 import com.autonexo.user.domain.model.queries.GetMechanicByIdQuery;
-import com.autonexo.user.domain.model.queries.GetMechanicByUserId;
+import com.autonexo.user.domain.model.queries.GetMechanicByUserIdQuery;
 import com.autonexo.user.domain.services.MechanicQueryService;
 import com.autonexo.user.infrastructure.persistence.jpa.repositories.MechanicRepository;
 import org.springframework.stereotype.Service;
@@ -48,7 +48,7 @@ public class MechanicQueryServiceImpl implements MechanicQueryService {
     }
 
     @Override
-    public Optional<Mechanic> handle(GetMechanicByUserId query) {
-        return mechanicRepository.findById(query.userId());
+    public Optional<Mechanic> handle(GetMechanicByUserIdQuery query) {
+        return mechanicRepository.findByUserId(query.userId());
     }
 }

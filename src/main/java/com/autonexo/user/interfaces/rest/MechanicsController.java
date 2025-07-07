@@ -2,7 +2,7 @@ package com.autonexo.user.interfaces.rest;
 
 import com.autonexo.user.domain.model.queries.GetAllMechanicsQuery;
 import com.autonexo.user.domain.model.queries.GetMechanicByIdQuery;
-import com.autonexo.user.domain.model.queries.GetMechanicByUserId;
+import com.autonexo.user.domain.model.queries.GetMechanicByUserIdQuery;
 import com.autonexo.user.domain.model.valueobjects.MechanicResponseType;
 import com.autonexo.user.domain.services.MechanicCommandService;
 import com.autonexo.user.domain.services.MechanicQueryService;
@@ -111,7 +111,7 @@ public class MechanicsController {
             @ApiResponse(responseCode = "404", description = "User not found."),
             @ApiResponse(responseCode = "401", description = "Unauthorized.")})
     public ResponseEntity<MechanicResource> getMechanicByUserId(@PathVariable Long userId) {
-        var getMechanicByUserIdQuery = new GetMechanicByUserId(userId);
+        var getMechanicByUserIdQuery = new GetMechanicByUserIdQuery(userId);
         var mechanic = mechanicQueryService.handle(getMechanicByUserIdQuery);
         if (mechanic.isEmpty()) {
             return ResponseEntity.notFound().build();

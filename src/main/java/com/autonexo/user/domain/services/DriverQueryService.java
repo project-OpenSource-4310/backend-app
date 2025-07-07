@@ -27,6 +27,6 @@ public interface DriverQueryService {
      */
     Optional<Driver> handle(GetDriverByIdQuery query);
 
-    Optional<Driver> handle(GetDriverByUserId query);
+    Optional<Driver> handle(GetDriverByUserIdQuery query);
 
 }
