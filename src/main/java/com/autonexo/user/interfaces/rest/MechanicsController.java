@@ -105,7 +105,7 @@ public class MechanicsController {
     }
 
     @GetMapping(value = "/userId/{userId}")
-    @Operation(summary = "Get mechanic by id", description = "Get the mechanic with the given id.")
+    @Operation(summary = "Get mechanic by user id", description = "Get the mechanic with the given user id.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "User retrieved successfully."),
             @ApiResponse(responseCode = "404", description = "User not found."),

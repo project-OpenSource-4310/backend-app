@@ -82,7 +82,7 @@ public class DriversController {
      * @return the authenticated user resource.
      */
     @PostMapping(value = "/driver")
-    @Operation(summary = "Drivers", description = "Create a new driver with the provided userId.")
+    @Operation(summary = "Create a new driver", description = "Create a new driver with the provided userId.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Driver logged in successfully."),
             @ApiResponse(responseCode = "201", description = "Driver created successfully."),
@@ -106,7 +106,7 @@ public class DriversController {
     }
 
     @GetMapping(value = "/userId/{userId}")
-    @Operation(summary = "Get driver by id", description = "Get the driver with the given id.")
+    @Operation(summary = "Get driver by user id", description = "Get the driver with the given user id.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "User retrieved successfully."),
             @ApiResponse(responseCode = "404", description = "User not found."),
