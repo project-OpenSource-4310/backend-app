@@ -1,8 +1,5 @@
 package com.autonexo.vehicles.interfaces.rest;
 
-
-import com.autonexo.inventory.interfaces.rest.resources.CreateInventoryResource;
-import com.autonexo.inventory.interfaces.rest.resources.InventoryResource;
 import com.autonexo.vehicles.application.commandServices.CarDeletionServices;
 import com.autonexo.vehicles.application.commandServices.CarRegistrationService;
 import com.autonexo.vehicles.domain.models.aggregates.Cars;
@@ -18,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-
 
 @RestController
 @RequestMapping("/api/v1/vehicles")
@@ -76,11 +72,8 @@ public class CarsController {
     @Operation(summary = "Get vehicle by plate", description = "Get vehicle by plate")
     public ResponseEntity<Cars> getCarByPlate(@PathVariable String plate) {
         Optional<Cars> car = carRepository.findByPlate(plate);
-        if (car.isPresent()) {
-            return new ResponseEntity<>(car.get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return car.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     /**
@@ -92,12 +85,9 @@ public class CarsController {
     @GetMapping("/{id}")
     @Operation(summary = "Get vehicle by id", description = "Get vehicle by id")
     public ResponseEntity<Cars> getCarById(@PathVariable Integer id) {
-        Optional<Cars> car = carRepository.findByCarId(id);
-        if (car.isPresent()) {
-            return new ResponseEntity<>(car.get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        Optional<Cars> car = carRepository.findById(id);
+        return car.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     /**

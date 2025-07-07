@@ -1,6 +1,7 @@
 package com.autonexo.vehicles.domain.models.aggregates;
 
-
+import com.autonexo.user.domain.model.entities.Driver;
+import com.autonexo.user.domain.model.entities.Mechanic;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -15,7 +16,7 @@ public class Cars {
 
     @Id
     @GeneratedValue
-    private Integer carId;
+    private Integer id;
 
     @Column(nullable = false, unique = true)
     private String plate;
@@ -28,4 +29,12 @@ public class Cars {
 
     @Column(nullable = false)
     private String year;
+
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @JoinColumn(name = "driver_id", referencedColumnName = "id", nullable = false)
+    private Driver driver;
+
+    @ManyToOne(optional = true, fetch = FetchType.EAGER)
+    @JoinColumn(name = "mechanic_id", referencedColumnName = "id")
+    private Mechanic mechanic;
 }
