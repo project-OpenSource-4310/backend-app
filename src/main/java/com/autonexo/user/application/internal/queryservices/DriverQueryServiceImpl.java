@@ -3,6 +3,7 @@ package com.autonexo.user.application.internal.queryservices;
 import com.autonexo.user.domain.model.entities.Driver;
 import com.autonexo.user.domain.model.queries.GetAllDriversQuery;
 import com.autonexo.user.domain.model.queries.GetDriverByIdQuery;
+import com.autonexo.user.domain.model.queries.GetDriverByUserId;
 import com.autonexo.user.domain.services.DriverQueryService;
 import com.autonexo.user.infrastructure.persistence.jpa.repositories.DriverRepository;
 import org.springframework.stereotype.Service;
@@ -44,5 +45,10 @@ public class DriverQueryServiceImpl implements DriverQueryService {
     @Override
     public Optional<Driver> handle(GetDriverByIdQuery query) {
         return driverRepository.findById(query.driverId());
+    }
+
+    @Override
+    public Optional<Driver> handle(GetDriverByUserId query) {
+        return driverRepository.findById(query.userId());
     }
 }

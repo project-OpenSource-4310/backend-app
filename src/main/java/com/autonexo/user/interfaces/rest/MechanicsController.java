@@ -2,6 +2,7 @@ package com.autonexo.user.interfaces.rest;
 
 import com.autonexo.user.domain.model.queries.GetAllMechanicsQuery;
 import com.autonexo.user.domain.model.queries.GetMechanicByIdQuery;
+import com.autonexo.user.domain.model.queries.GetMechanicByUserId;
 import com.autonexo.user.domain.model.valueobjects.MechanicResponseType;
 import com.autonexo.user.domain.services.MechanicCommandService;
 import com.autonexo.user.domain.services.MechanicQueryService;
@@ -101,5 +102,21 @@ public class MechanicsController {
         return mechanicResponse.get().type() == MechanicResponseType.EXISTING_MECHANIC
                 ? ResponseEntity.ok(mechanicResourceAuth)
                 : new ResponseEntity<>(mechanicResourceAuth, HttpStatus.CREATED);
+    }
+
+    @GetMapping(value = "/userId/{userId}")
+    @Operation(summary = "Get mechanic by id", description = "Get the mechanic with the given id.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User retrieved successfully."),
+            @ApiResponse(responseCode = "404", description = "User not found."),
+            @ApiResponse(responseCode = "401", description = "Unauthorized.")})
+    public ResponseEntity<MechanicResource> getMechanicByUserId(@PathVariable Long userId) {
+        var getMechanicByUserIdQuery = new GetMechanicByUserId(userId);
+        var mechanic = mechanicQueryService.handle(getMechanicByUserIdQuery);
+        if (mechanic.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        var mechanicResource = MechanicResourceFromEntityAssembler.toResourceFromEntity(mechanic.get());
+        return ResponseEntity.ok(mechanicResource);
     }
 }

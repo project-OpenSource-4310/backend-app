@@ -1,10 +1,7 @@
 package com.autonexo.user.domain.services;
 
 import com.autonexo.user.domain.model.entities.Driver;
-import com.autonexo.user.domain.model.queries.GetAllDriversQuery;
-import com.autonexo.user.domain.model.queries.GetAllMechanicsQuery;
-import com.autonexo.user.domain.model.queries.GetDriverByIdQuery;
-import com.autonexo.user.domain.model.queries.GetUserByIdQuery;
+import com.autonexo.user.domain.model.queries.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -29,5 +26,7 @@ public interface DriverQueryService {
      * @return an {@link Optional} of {@link Driver} entity
      */
     Optional<Driver> handle(GetDriverByIdQuery query);
+
+    Optional<Driver> handle(GetDriverByUserId query);
 
 }

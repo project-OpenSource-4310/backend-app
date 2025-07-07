@@ -3,6 +3,7 @@ package com.autonexo.user.domain.services;
 import com.autonexo.user.domain.model.entities.Mechanic;
 import com.autonexo.user.domain.model.queries.GetAllMechanicsQuery;
 import com.autonexo.user.domain.model.queries.GetMechanicByIdQuery;
+import com.autonexo.user.domain.model.queries.GetMechanicByUserId;
 import com.autonexo.user.domain.model.queries.GetUserByIdQuery;
 
 import java.util.List;
@@ -28,5 +29,6 @@ public interface MechanicQueryService {
      * @return an {@link Optional} of {@link Mechanic} entity
      */
     Optional<Mechanic> handle(GetMechanicByIdQuery query);
+    Optional<Mechanic> handle(GetMechanicByUserId query);
 
 }

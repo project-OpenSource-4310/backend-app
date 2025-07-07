@@ -2,12 +2,16 @@ package com.autonexo.user.interfaces.rest;
 
 import com.autonexo.user.domain.model.queries.GetAllDriversQuery;
 import com.autonexo.user.domain.model.queries.GetDriverByIdQuery;
+import com.autonexo.user.domain.model.queries.GetDriverByUserId;
+import com.autonexo.user.domain.model.queries.GetMechanicByUserId;
 import com.autonexo.user.domain.model.valueobjects.DriverResponseType;
 import com.autonexo.user.domain.services.DriverCommandService;
 import com.autonexo.user.domain.services.DriverQueryService;
 import com.autonexo.user.interfaces.rest.resources.DriverResource;
+import com.autonexo.user.interfaces.rest.resources.MechanicResource;
 import com.autonexo.user.interfaces.rest.transform.AddDriverToUserCommandFromResourceAssembler;
 import com.autonexo.user.interfaces.rest.transform.DriverResourceFromEntityAssembler;
+import com.autonexo.user.interfaces.rest.transform.MechanicResourceFromEntityAssembler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -102,5 +106,21 @@ public class DriversController {
         return driverResponse.get().type() == DriverResponseType.EXISTING_DRIVER
                 ? ResponseEntity.ok(driverResourceAuth)
                 : new ResponseEntity<>(driverResourceAuth, HttpStatus.CREATED);
+    }
+
+    @GetMapping(value = "/userId/{userId}")
+    @Operation(summary = "Get driver by id", description = "Get the driver with the given id.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User retrieved successfully."),
+            @ApiResponse(responseCode = "404", description = "User not found."),
+            @ApiResponse(responseCode = "401", description = "Unauthorized.")})
+    public ResponseEntity<DriverResource> getDriverByUserId(@PathVariable Long userId) {
+        var getDriverByUserIdQuery = new GetDriverByUserId(userId);
+        var driver = driverQueryService.handle(getDriverByUserIdQuery);
+        if (driver.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        var driverResource = DriverResourceFromEntityAssembler.toResourceFromEntity(driver.get());
+        return ResponseEntity.ok(driverResource);
     }
 }
