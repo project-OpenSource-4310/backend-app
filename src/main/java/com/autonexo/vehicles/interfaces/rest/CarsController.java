@@ -124,7 +124,7 @@ public class CarsController {
         return new ResponseEntity<>(resources, HttpStatus.OK);
     }
 
-    @PutMapping("/{vehicleId}")
+    @PutMapping("/vehicleId/{vehicleId}")
     @Operation(summary = "Update vehicle", description = "Update vehicle")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "vehicle updated"),
@@ -137,7 +137,6 @@ public class CarsController {
         var updatedCarResource = CarResourceFromEntityAssembler.toResourceFromEntity(updatedCarEntity);
         return ResponseEntity.ok(updatedCarResource);
     }
-
 
     private CarResource toResource(Cars car) {
         return CarResource.builder()
