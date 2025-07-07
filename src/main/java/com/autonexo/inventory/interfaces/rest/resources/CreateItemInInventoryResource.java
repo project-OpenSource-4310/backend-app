@@ -1,6 +1,6 @@
 package com.autonexo.inventory.interfaces.rest.resources;
 
-public record CreateItemInInventoryResource(String name, String description, Integer quantity, Long inventoryId) {
+public record CreateItemInInventoryResource(String name, String description, Integer quantity, Long inventoryId, Float price) {
     /**
      * Validates the resource.
      * @throws IllegalArgumentException if the name, description, quantity, inventoryId is null or blank.
@@ -20,6 +20,9 @@ public record CreateItemInInventoryResource(String name, String description, Int
 
         if (inventoryId == null || inventoryId < 0) {
             throw new IllegalArgumentException("InventoryId is required");
+        }
+        if (price == null) {
+            throw new IllegalArgumentException("Price cannot be null");
         }
     }
 }

@@ -14,6 +14,6 @@ public class CreateItemInInventoryCommandFromResourceAssembler {
      * @return The {@link CreateItemInInventoryCommand} command that results from the conversion.
      */
     public static CreateItemInInventoryCommand toCommandFromResource(CreateItemInInventoryResource resource) {
-        return new CreateItemInInventoryCommand(resource.name(), resource.description(), resource.quantity(), resource.inventoryId());
+        return new CreateItemInInventoryCommand(resource.name(), resource.description(), resource.quantity(), resource.price(), resource.inventoryId());
     }
 }

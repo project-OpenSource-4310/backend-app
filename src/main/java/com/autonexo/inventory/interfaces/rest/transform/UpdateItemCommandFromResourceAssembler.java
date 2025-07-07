@@ -15,6 +15,6 @@ public class UpdateItemCommandFromResourceAssembler {
      * @return The {@link UpdateItemCommand} command that results from the conversion.
      */
     public static UpdateItemCommand toCommandFromResource(Long itemId, UpdateItemResource resource) {
-        return new UpdateItemCommand(itemId, resource.name(), resource.description(), resource.quantity());
+        return new UpdateItemCommand(itemId, resource.name(), resource.description(), resource.quantity(), resource.price());
     }
 }
