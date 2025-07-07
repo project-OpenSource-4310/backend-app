@@ -10,6 +10,8 @@ import com.autonexo.vehicles.domain.models.commands.UpdateCarCommand;
 import com.autonexo.vehicles.infrastructure.persistence.jpa.repositories.CarRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class CarUpdateService {
 
@@ -23,26 +25,18 @@ public class CarUpdateService {
         this.mechanicRepository = mechanicRepository;
     }
 
-    public Cars handle(UpdateCarCommand command) {
-        Cars existingCar = carRepository.findById(command.id())
-                .orElseThrow(RegisterCarExceptions::new);
-
-        Driver driver = driverRepository.findById(command.driverId())
-                .orElseThrow(RegisterCarExceptions::new);
-
-        Mechanic mechanic = null;
-        if (command.mechanicId() != null) {
-            mechanic = mechanicRepository.findById(command.mechanicId())
-                    .orElseThrow(RegisterCarExceptions::new);
+    public Optional<Cars> handle(UpdateCarCommand command) {
+        if (carRepository.existsByPlateAndIdIsNot(command.plate(), command.id()))
+            throw new IllegalArgumentException("Car with plate %s already exists".formatted(command.plate()));
+        var result = carRepository.findById(command.id());
+        if (result.isEmpty())
+            throw new IllegalArgumentException("Car with id %s not found".formatted(command.id()));
+        var carToUpdate = result.get();
+        try {
+            var updatedCar = carRepository.save(carToUpdate.updateInformation(command.plate(), command.make(), command.model(), command.year(), command.mechanicId()));
+            return Optional.of(updatedCar);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Error while updating car: %s".formatted(e.getMessage()));
         }
-
-        existingCar.setPlate(command.plate());
-        existingCar.setMake(command.make());
-        existingCar.setModel(command.model());
-        existingCar.setYear(command.year());
-        existingCar.setDriver(driver);
-        existingCar.setMechanic(mechanic);
-
-        return carRepository.save(existingCar);
     }
 }

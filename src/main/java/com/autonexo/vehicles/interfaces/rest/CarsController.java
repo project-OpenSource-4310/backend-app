@@ -1,5 +1,9 @@
 package com.autonexo.vehicles.interfaces.rest;
 
+import com.autonexo.inventory.interfaces.rest.resources.InventoryResource;
+import com.autonexo.inventory.interfaces.rest.resources.UpdateInventoryResource;
+import com.autonexo.inventory.interfaces.rest.transform.InventoryResourceFromEntityAssembler;
+import com.autonexo.inventory.interfaces.rest.transform.UpdateInventoryCommandFromResourceAssembler;
 import com.autonexo.vehicles.application.commandServices.CarDeletionServices;
 import com.autonexo.vehicles.application.commandServices.CarRegistrationService;
 import com.autonexo.vehicles.application.commandServices.CarUpdateService;
@@ -8,7 +12,12 @@ import com.autonexo.vehicles.domain.models.commands.DeleteCarByIdCommand;
 import com.autonexo.vehicles.domain.models.commands.RegisterCarCommand;
 import com.autonexo.vehicles.infrastructure.persistence.jpa.repositories.CarRepository;
 import com.autonexo.vehicles.interfaces.rest.resources.CarResource;
+import com.autonexo.vehicles.interfaces.rest.resources.UpdateCarResource;
+import com.autonexo.vehicles.interfaces.rest.transform.CarResourceFromEntityAssembler;
+import com.autonexo.vehicles.interfaces.rest.transform.UpdateCarCommandFromResourceAssembler;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,14 +35,17 @@ public class CarsController {
     private final CarRegistrationService carRegistrationService;
     private final CarDeletionServices carDeletionServices;
     private final CarRepository carRepository;
+    private final CarUpdateService carUpdateService;
 
 
     @Autowired
     public CarsController(CarRegistrationService carRegistrationService,
                           CarDeletionServices carDeletionServices,
-                          CarRepository carRepository) {
+                          CarRepository carRepository,
+                          CarUpdateService carUpdateService) {
         this.carRegistrationService = carRegistrationService;
         this.carDeletionServices = carDeletionServices;
+        this.carUpdateService = carUpdateService;
         this.carRepository = carRepository;
     }
 
@@ -112,8 +124,21 @@ public class CarsController {
         return new ResponseEntity<>(resources, HttpStatus.OK);
     }
 
+    @PutMapping("/{vehicleId}")
+    @Operation(summary = "Update vehicle", description = "Update vehicle")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "vehicle updated"),
+            @ApiResponse(responseCode = "404", description = "vehicle not found")})
+    public ResponseEntity<CarResource> updateVehicle(@PathVariable Integer vehicleId, @RequestBody UpdateCarResource resource) {
+        var updateCarCommand = UpdateCarCommandFromResourceAssembler.toCommandFromResource(vehicleId, resource);
+        var updatedCar = carUpdateService.handle(updateCarCommand);
+        if (updatedCar.isEmpty()) return ResponseEntity.notFound().build();
+        var updatedCarEntity = updatedCar.get();
+        var updatedCarResource = CarResourceFromEntityAssembler.toResourceFromEntity(updatedCarEntity);
+        return ResponseEntity.ok(updatedCarResource);
+    }
 
-    // ✅ Método auxiliar para mapear entidad -> DTO
+
     private CarResource toResource(Cars car) {
         return CarResource.builder()
                 .id(car.getId())

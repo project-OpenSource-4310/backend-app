@@ -8,6 +8,7 @@ import java.util.Optional;
 
 public interface CarRepository extends JpaRepository<Cars, Integer> {
     boolean existsByPlate(String plate);
+    boolean existsByPlateAndIdIsNot(String plate, Integer carId);
     Optional<Cars> findByPlate(String plate);
     List<Cars> findByDriver_Id(Long driverId);
     List<Cars> findByMechanic_Id(Long mechanicId);

@@ -46,4 +46,13 @@ public class Cars {
     public Long getMechanicId() {
         return mechanic != null ? mechanic.getId() : null;
     }
+
+    public Cars updateInformation(String plate, String make, String model, String year, Long mechanicId) {
+        this.plate = plate;
+        this.make = make;
+        this.model = model;
+        this.year = year;
+        this.mechanic.setId(mechanicId);
+        return this;
+    }
 }
