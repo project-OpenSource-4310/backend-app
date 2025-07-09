@@ -138,7 +138,7 @@ public class InventoryController {
      * @param mechanicId The mechanic id
      * @return The list of {@link InventoryResource} resources for all inventories
      */
-    @GetMapping("/{mechanicId}")
+    @GetMapping("/mechanic/{mechanicId}")
     @Operation(summary = "Get all inventories by mechanicId", description = "Get all inventories by mechanicId")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Inventories found"),
