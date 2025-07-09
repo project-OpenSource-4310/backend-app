@@ -39,8 +39,8 @@ import java.util.List;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping(value = "/api/v1/inventories", produces = APPLICATION_JSON_VALUE)
-@Tag(name = "Inventories", description = "Available Inventory Endpoints")
+@RequestMapping(value = "/api/v1/maintenances", produces = APPLICATION_JSON_VALUE)
+@Tag(name = "Maintenances", description = "Available Maintenance Endpoints")
 public class MaintenanceController {
     private final MaintenanceCommandService maintenanceCommandService;
     private final MaintenanceQueryService maintenanceQueryService;
