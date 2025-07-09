@@ -100,7 +100,7 @@ public class InventoryController {
      * @param id The inventory id
      * @return The {@link InventoryResource} resource for the inventory
      */
-    @GetMapping("inventory/{id}")
+    @GetMapping("/{id}")
     @Operation(summary = "Get inventory by id", description = "Get inventory by id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "inventory found"),

@@ -111,7 +111,7 @@ public class ItemController {
      * @param inventoryId The inventory id
      * @return The list of {@link ItemResource} resources for all items
      */
-    @GetMapping("/{inventoryId}")
+    @GetMapping("inventory/{inventoryId}")
     @Operation(summary = "Get all items by inventoryId", description = "Get all items by inventoryId")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Items found"),
