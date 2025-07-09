@@ -26,9 +26,6 @@ public class ItemCommandServiceImpl implements ItemCommandService {
 
     @Override
     public Optional<Item> handle(CreateItemInInventoryCommand command) {
-        if (itemRepository.existsByName(command.name()))
-            throw new RuntimeException("Item already exists");
-
         if (command.inventoryId() == null) {
             throw new IllegalArgumentException("Inventory ID cannot be null");
         }
