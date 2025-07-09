@@ -72,7 +72,7 @@ public class VehicleController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "vehicle found"),
             @ApiResponse(responseCode = "404", description = "vehicle not found")})
-    public ResponseEntity<VehicleResource> getVehicleById(@PathVariable Integer id) {
+    public ResponseEntity<VehicleResource> getVehicleById(@PathVariable Long id) {
         var getVehicleByIdQuery = new GetVehicleByIdQuery(id);
         var vehicle = vehicleQueryService.handle(getVehicleByIdQuery);
         if (vehicle.isEmpty()) return ResponseEntity.notFound().build();
@@ -128,7 +128,7 @@ public class VehicleController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "vehicle updated"),
             @ApiResponse(responseCode = "404", description = "vehicle not found")})
-    public ResponseEntity<VehicleResource> updateVehicle(@PathVariable Integer vehicleId, @RequestBody UpdateVehicleResource resource) {
+    public ResponseEntity<VehicleResource> updateVehicle(@PathVariable Long vehicleId, @RequestBody UpdateVehicleResource resource) {
         var updateVehicleCommand = UpdateVehicleCommandFromResourceAssembler.toCommandFromResource(vehicleId, resource);
         var updatedVehicle = vehicleCommandService.handle(updateVehicleCommand);
         if (updatedVehicle.isEmpty()) return ResponseEntity.notFound().build();
@@ -142,7 +142,7 @@ public class VehicleController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "vehicle deleted"),
             @ApiResponse(responseCode = "404", description = "vehicle not found")})
-    public ResponseEntity<?> deleteVehicle(@PathVariable Integer vehicleId) {
+    public ResponseEntity<?> deleteVehicle(@PathVariable Long vehicleId) {
         var deleteVehicleByIdCommand = new DeleteVehicleByIdCommand(vehicleId);
         vehicleCommandService.handle(deleteVehicleByIdCommand);
         return ResponseEntity.ok("Vehicle with given id successfully deleted");

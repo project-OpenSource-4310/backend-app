@@ -1,32 +1,23 @@
 package com.autonexo.vehicles.domain.models.aggregates;
 
+import com.autonexo.inventory.domain.model.aggregates.Inventory;
+import com.autonexo.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
 import com.autonexo.user.domain.model.entities.Driver;
 import com.autonexo.user.domain.model.entities.Mechanic;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Entity
-@Table(name = "vehicles")
 @Getter
-@Setter
-@AllArgsConstructor
-@Builder
-public class Vehicle {
+@Entity
+public class Vehicle extends AuditableAbstractAggregateRoot<Vehicle> {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
     private String plate;
 
-    @Column(nullable = false)
     private String make;
 
-    @Column(nullable = false)
     private String model;
 
-    @Column(nullable = false)
     private String year;
 
     @ManyToOne(optional = false, fetch = FetchType.EAGER)

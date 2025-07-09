@@ -6,7 +6,7 @@ import com.autonexo.vehicles.domain.models.commands.UpdateVehicleCommand;
 import com.autonexo.vehicles.interfaces.rest.resources.UpdateVehicleResource;
 
 public class UpdateVehicleCommandFromResourceAssembler {
-    public static UpdateVehicleCommand toCommandFromResource(Integer vehicleId, UpdateVehicleResource resource) {
+    public static UpdateVehicleCommand toCommandFromResource(Long vehicleId, UpdateVehicleResource resource) {
         return new UpdateVehicleCommand(vehicleId, resource.mechanicId());
     }
 }
