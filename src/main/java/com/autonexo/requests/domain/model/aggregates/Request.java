@@ -48,11 +48,12 @@ public class Request extends AuditableModel {
         this.accepted = accepted;
     }
 
-    public Request updateInformation(String title, String description, Double budget, Boolean accepted) {
+    public Request updateInformation(String title, String description, Double budget, Boolean accepted, Long mechanicId) {
         this.title = title;
         this.description = description;
         this.budget = budget;
         this.accepted = accepted;
+        this.mechanicId = mechanicId;
         return this;
     }
 }

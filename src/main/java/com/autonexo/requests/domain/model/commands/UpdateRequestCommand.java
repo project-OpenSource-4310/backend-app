@@ -1,6 +1,6 @@
 package com.autonexo.requests.domain.model.commands;
 
-public record UpdateRequestCommand(String accepted)
+public record UpdateRequestCommand(Long mechanicId, String accepted)
 {
     public UpdateRequestCommand {
             if (accepted == null)

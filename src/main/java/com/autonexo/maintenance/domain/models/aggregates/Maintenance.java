@@ -1,6 +1,9 @@
 package com.autonexo.maintenance.domain.models.aggregates;
 
+import com.autonexo.inventory.domain.model.aggregates.Inventory;
 import com.autonexo.maintenance.domain.models.valueobjects.StatusMaintenance;
+import com.autonexo.requests.domain.model.aggregates.Request;
+import com.autonexo.user.domain.model.entities.Mechanic;
 import com.autonexo.vehicles.domain.models.aggregates.Cars;
 import jakarta.persistence.*;
 import lombok.*;
@@ -11,28 +14,32 @@ import java.time.LocalDate;
 @Table(name = "maintenances")
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class Maintenance {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer maintenanceId;
-
-    @Column(name = "date_maintenance", nullable = false)
-    private LocalDate dateMaintenance;
-
-    @Column(nullable = false)
-    private String description;
-
-    @Column(nullable = false)
-    private Float totalCost;
-
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private StatusMaintenance status;
+    private Long Id;
 
     @ManyToOne
-    private Cars cars;
+    @JoinColumn(name = "request_id", referencedColumnName = "id")
+    private Request request;
+
+    private Boolean isCompleted;
+
+    public Maintenance(){
+        this.request = null;
+        this.isCompleted = null;
+    }
+
+    public Maintenance(Request request, Boolean isCompleted) {
+        this.request = request;
+        this.isCompleted = isCompleted;
+    }
+
+    public Maintenance updateInformation(Boolean isCompleted) {
+        this.isCompleted = isCompleted;
+        return this;
+    }
 }

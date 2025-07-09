@@ -3,6 +3,7 @@ package com.autonexo.requests.interfaces.rest;
 import com.autonexo.requests.domain.model.aggregates.Request;
 import com.autonexo.requests.infraestructure.persistance.jpa.repositories.RequestRepository;
 import com.autonexo.requests.interfaces.rest.resources.CreateRequestResource;
+import com.autonexo.requests.interfaces.rest.resources.UpdateRequestResource;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -97,7 +98,7 @@ public class RequestController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Request found"),
             @ApiResponse(responseCode = "404", description = "Request not found")})
-    public ResponseEntity<Request> updateRequest(@RequestBody CreateRequestResource resource, @PathVariable Long requestId) {
+    public ResponseEntity<Request> updateRequest(@RequestBody UpdateRequestResource resource, @PathVariable Long requestId) {
         Optional<Request> request = requestRepository.findById(requestId);
         boolean accepted;
         var requestUpdated = request.get();
@@ -107,7 +108,7 @@ public class RequestController {
         else {
             accepted = false;
         }
-        requestUpdated.updateInformation(resource.title(),resource.description(),resource.budget(), accepted);
+        requestUpdated.updateInformation(resource.title(),resource.description(),resource.budget(), accepted, resource.mechanicId());
         var saved = requestRepository.save(requestUpdated);
         return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }
