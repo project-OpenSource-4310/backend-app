@@ -13,5 +13,6 @@ import java.util.Optional;
 @Repository
 public interface MechanicRepository extends JpaRepository<Mechanic, Long> {
     boolean existsByUserId(Long userId);
+    Optional<Mechanic> findById(Long mechanicId);
     Optional<Mechanic> findByUserId(Long userId);
 }
