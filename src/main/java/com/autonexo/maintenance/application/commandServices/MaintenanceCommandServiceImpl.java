@@ -39,7 +39,7 @@ public class MaintenanceCommandServiceImpl implements MaintenanceCommandService 
         }
         Request existingRequest = requestRepository.findById(command.requestId()).orElseThrow(() -> new IllegalArgumentException("Request not found"));
 
-        var maintenance = new Maintenance(existingRequest, command.isCompleted());
+        var maintenance = new Maintenance(existingRequest, false);
         try {
             maintenanceRepository.save(maintenance);
         } catch (Exception e) {
@@ -62,8 +62,15 @@ public class MaintenanceCommandServiceImpl implements MaintenanceCommandService 
         if (result.isEmpty())
             throw new IllegalArgumentException("Maintenance with id %s not found".formatted(command.maintenanceId()));
         var maintenanceToUpdate = result.get();
+        boolean accepted;
+        if (command.isCompleted().toLowerCase() == "true") {
+            accepted = true;
+        }
+        else {
+            accepted = false;
+        }
         try {
-            var updatedMaintenance = maintenanceRepository.save(maintenanceToUpdate.updateInformation(command.isCompleted()));
+            var updatedMaintenance = maintenanceRepository.save(maintenanceToUpdate.updateInformation(accepted));
             return Optional.of(updatedMaintenance);
         } catch (Exception e) {
             throw new IllegalArgumentException("Error while updating maintenance: %s".formatted(e.getMessage()));

@@ -7,6 +7,6 @@ import com.autonexo.maintenance.interfaces.rest.resources.CreateMaintenanceResou
 
 public class CreateMaintenanceCommandFromResourceAssembler {
     public static CreateMaintenanceCommand toCommandFromResource(CreateMaintenanceResource resource) {
-        return new CreateMaintenanceCommand(resource.requestId(), resource.isCompleted());
+        return new CreateMaintenanceCommand(resource.requestId());
     }
 }

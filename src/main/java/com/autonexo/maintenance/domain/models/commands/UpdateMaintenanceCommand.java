@@ -1,4 +1,4 @@
 package com.autonexo.maintenance.domain.models.commands;
 
-public record UpdateMaintenanceCommand(Long maintenanceId, boolean isCompleted) {
+public record UpdateMaintenanceCommand(Long maintenanceId, String isCompleted) {
 }
