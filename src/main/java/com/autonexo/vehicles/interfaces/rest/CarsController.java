@@ -27,18 +27,17 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
 @RestController
-@RequestMapping("/api/v1/vehicles")
+@RequestMapping(value = "/api/v1/vehicles", produces = APPLICATION_JSON_VALUE)
 @Tag(name = "Vehicles", description = "Available Vehicle Endpoints")
 public class CarsController {
-
     private final CarRegistrationService carRegistrationService;
     private final CarDeletionServices carDeletionServices;
     private final CarRepository carRepository;
     private final CarUpdateService carUpdateService;
-
-
-    @Autowired
+    
     public CarsController(CarRegistrationService carRegistrationService,
                           CarDeletionServices carDeletionServices,
                           CarRepository carRepository,
@@ -126,9 +125,6 @@ public class CarsController {
 
     @PutMapping("/vehicleId/{vehicleId}")
     @Operation(summary = "Update vehicle", description = "Update vehicle")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "vehicle updated"),
-            @ApiResponse(responseCode = "404", description = "vehicle not found")})
     public ResponseEntity<CarResource> updateVehicle(@PathVariable Integer vehicleId, @RequestBody UpdateCarResource resource) {
         var updateCarCommand = UpdateCarCommandFromResourceAssembler.toCommandFromResource(vehicleId, resource);
         var updatedCar = carUpdateService.handle(updateCarCommand);
