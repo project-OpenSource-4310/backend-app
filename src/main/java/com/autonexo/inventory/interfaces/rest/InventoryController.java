@@ -3,6 +3,7 @@ package com.autonexo.inventory.interfaces.rest;
 import com.autonexo.inventory.domain.model.commands.DeleteInventoryCommand;
 import com.autonexo.inventory.domain.model.queries.GetAllInventoriesByMechanicIdQuery;
 import com.autonexo.inventory.domain.model.queries.GetAllInventoriesQuery;
+import com.autonexo.inventory.domain.model.queries.GetInventoryByIdQuery;
 import com.autonexo.inventory.domain.model.queries.GetInventoryByNameQuery;
 import com.autonexo.inventory.domain.services.InventoryCommandService;
 import com.autonexo.inventory.domain.services.InventoryQueryService;
@@ -87,6 +88,26 @@ public class InventoryController {
     public ResponseEntity<InventoryResource> getInventoryByName(@PathVariable String name) {
         var getInventoryByNameQuery = new GetInventoryByNameQuery(name);
         var inventory = inventoryQueryService.handle(getInventoryByNameQuery);
+        if (inventory.isEmpty()) return ResponseEntity.notFound().build();
+        var inventoryEntity = inventory.get();
+        var inventoryResource = InventoryResourceFromEntityAssembler.toResourceFromEntity(inventoryEntity);
+        return ResponseEntity.ok(inventoryResource);
+    }
+
+    /**
+     * Get inventory by id
+     *
+     * @param id The inventory id
+     * @return The {@link InventoryResource} resource for the inventory
+     */
+    @GetMapping("inventory/{id}")
+    @Operation(summary = "Get inventory by id", description = "Get inventory by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "inventory found"),
+            @ApiResponse(responseCode = "404", description = "inventory not found")})
+    public ResponseEntity<InventoryResource> getInventoryById(@PathVariable Long id) {
+        var getInventoryByIdQuery = new GetInventoryByIdQuery(id);
+        var inventory = inventoryQueryService.handle(getInventoryByIdQuery);
         if (inventory.isEmpty()) return ResponseEntity.notFound().build();
         var inventoryEntity = inventory.get();
         var inventoryResource = InventoryResourceFromEntityAssembler.toResourceFromEntity(inventoryEntity);

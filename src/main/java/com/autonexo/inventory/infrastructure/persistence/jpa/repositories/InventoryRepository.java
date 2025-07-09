@@ -20,6 +20,7 @@ public interface InventoryRepository extends JpaRepository<Inventory, Long>
      * @return The Inventory object.
      */
     Optional<Inventory> findByName(String name);
+    Optional<Inventory> findById(Long id);
     List<Inventory> findAllByMechanicId(Long mechanicId);
 
 

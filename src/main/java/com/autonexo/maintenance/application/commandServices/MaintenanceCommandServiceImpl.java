@@ -39,7 +39,10 @@ public class MaintenanceCommandServiceImpl implements MaintenanceCommandService 
         }
         Request existingRequest = requestRepository.findById(command.requestId()).orElseThrow(() -> new IllegalArgumentException("Request not found"));
 
-        var maintenance = new Maintenance(existingRequest, false);
+        var maintenance = new Maintenance(existingRequest, false, existingRequest.getTitle(),
+                existingRequest.getDescription(), existingRequest.getBudget(),
+                existingRequest.getVehicleId(), existingRequest.getDriverId(),
+                existingRequest.getMechanicId());
         try {
             maintenanceRepository.save(maintenance);
         } catch (Exception e) {

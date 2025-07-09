@@ -3,6 +3,7 @@ package com.autonexo.inventory.domain.services;
 import com.autonexo.inventory.domain.model.aggregates.Inventory;
 import com.autonexo.inventory.domain.model.queries.GetAllInventoriesQuery;
 import com.autonexo.inventory.domain.model.queries.GetAllInventoriesByMechanicIdQuery;
+import com.autonexo.inventory.domain.model.queries.GetInventoryByIdQuery;
 import com.autonexo.inventory.domain.model.queries.GetInventoryByNameQuery;
 
 import java.util.List;
@@ -22,6 +23,13 @@ public interface InventoryQueryService {
      * @return an {@link Optional} of {@link Inventory} entity
      */
     Optional<Inventory> handle(GetInventoryByNameQuery query);
+
+    /**
+     * Handle get inventory by name query
+     * @param query the {@link GetInventoryByIdQuery} query
+     * @return an {@link Optional} of {@link Inventory} entity
+     */
+    Optional<Inventory> handle(GetInventoryByIdQuery query);
 
     /**
      * Handle get inventories by mechanicId query

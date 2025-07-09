@@ -3,6 +3,7 @@ package com.autonexo.inventory.application.internal.queryservices;
 import com.autonexo.inventory.domain.model.aggregates.Inventory;
 import com.autonexo.inventory.domain.model.queries.GetAllInventoriesByMechanicIdQuery;
 import com.autonexo.inventory.domain.model.queries.GetAllInventoriesQuery;
+import com.autonexo.inventory.domain.model.queries.GetInventoryByIdQuery;
 import com.autonexo.inventory.domain.model.queries.GetInventoryByNameQuery;
 import com.autonexo.inventory.domain.services.InventoryQueryService;
 import com.autonexo.inventory.infrastructure.persistence.jpa.repositories.InventoryRepository;
@@ -55,5 +56,10 @@ public class InventoryQueryServiceImpl implements InventoryQueryService {
     @Override
     public Optional<Inventory> handle(GetInventoryByNameQuery query) {
         return inventoryRepository.findByName(query.name());
+    }
+
+    @Override
+    public Optional<Inventory> handle(GetInventoryByIdQuery query) {
+        return inventoryRepository.findById(query.id());
     }
 }

@@ -26,16 +26,44 @@ public class Maintenance {
     @JoinColumn(name = "request_id", referencedColumnName = "id")
     private Request request;
 
+    private String title;
+
+    @Column(nullable = false)
+    private String description;
+
+    private Double budget;
+
+    @Column(nullable = false)
+    private Long vehicleId;
+
+    @Column(nullable = false)
+    private Long driverId;
+
+    @Column(nullable = false)
+    private Long mechanicId;
+
     private Boolean isCompleted;
 
     public Maintenance(){
         this.request = null;
         this.isCompleted = null;
+        this.title = null;
+        this.description = null;
+        this.budget = null;
+        this.vehicleId = null;
+        this.driverId = null;
+        this.mechanicId = null;
     }
 
-    public Maintenance(Request request, Boolean isCompleted) {
+    public Maintenance(Request request, Boolean isCompleted, String title, String description, Double budget, Long vehicleId, Long driverId, Long mechanicId) {
         this.request = request;
         this.isCompleted = isCompleted;
+        this.title = title;
+        this.description = description;
+        this.budget = budget;
+        this.vehicleId = vehicleId;
+        this.driverId = driverId;
+        this.mechanicId = mechanicId;
     }
 
     public Maintenance updateInformation(Boolean isCompleted) {
