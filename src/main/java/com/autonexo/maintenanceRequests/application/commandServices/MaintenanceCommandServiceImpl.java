@@ -57,13 +57,7 @@ public class MaintenanceCommandServiceImpl implements MaintenanceCommandService 
         if (result.isEmpty())
             throw new IllegalArgumentException("Maintenance with id %s not found".formatted(command.maintenanceId()));
         var maintenanceToUpdate = result.get();
-        boolean accepted;
-        if (command.isCompleted().toLowerCase() == "true") {
-            accepted = true;
-        }
-        else {
-            accepted = false;
-        }
+        boolean accepted = true;
         try {
             var updatedMaintenance = maintenanceRepository.save(maintenanceToUpdate.updateInformation(accepted));
             return Optional.of(updatedMaintenance);
