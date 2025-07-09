@@ -67,7 +67,7 @@ public class VehicleController {
         return ResponseEntity.ok(vehicleResource);
     }
 
-    @GetMapping("vehicle/{id}")
+    @GetMapping("/{id}")
     @Operation(summary = "Get vehicle by id", description = "Get vehicle by id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "vehicle found"),
