@@ -3,6 +3,7 @@ package com.autonexo.maintenanceRequests.interfaces.rest;
 import com.autonexo.inventory.interfaces.rest.resources.InventoryResource;
 import com.autonexo.maintenanceRequests.domain.models.queries.GetAllMaintenanceQuery;
 import com.autonexo.maintenanceRequests.domain.models.queries.GetMaintenanceByRequestIdQuery;
+import com.autonexo.maintenanceRequests.domain.models.queries.GetMaintenancesByVehicleIdQuery;
 import com.autonexo.maintenanceRequests.domain.services.MaintenanceCommandService;
 import com.autonexo.maintenanceRequests.domain.services.MaintenanceQueryService;
 import com.autonexo.maintenanceRequests.interfaces.rest.resources.CreateMaintenanceResource;
@@ -85,6 +86,20 @@ public class MaintenanceController {
             @ApiResponse(responseCode = "404", description = "Maintenances not found")})
     public ResponseEntity<List<MaintenanceResource>> getAllMaintenances() {
         var maintenances = maintenanceQueryService.handle(new GetAllMaintenanceQuery());
+        if (maintenances.isEmpty()) return ResponseEntity.notFound().build();
+        var maintenanceResources = maintenances.stream()
+                .map(MaintenanceResourceFromEntityAssembler::toResourceFromEntity)
+                .toList();
+        return ResponseEntity.ok(maintenanceResources);
+    }
+
+    @GetMapping("/vehicle/{vehicleId}")
+    @Operation(summary = "Get all maintenances by vehicleId", description = "Get all maintenances by vehicleId")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Maintenances found"),
+            @ApiResponse(responseCode = "404", description = "Maintenances not found")})
+    public ResponseEntity<List<MaintenanceResource>> getMaintenancesByVehicleId(@PathVariable Long vehicleId) {
+        var maintenances = maintenanceQueryService.handle(new GetMaintenancesByVehicleIdQuery(vehicleId));
         if (maintenances.isEmpty()) return ResponseEntity.notFound().build();
         var maintenanceResources = maintenances.stream()
                 .map(MaintenanceResourceFromEntityAssembler::toResourceFromEntity)
