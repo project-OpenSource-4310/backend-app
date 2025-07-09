@@ -8,7 +8,7 @@ public record CreateRequestResource(
         Long vehicleId,
         Long driverId,
         Long mechanicId,
-        boolean accepted
+        String accepted
 ) {
     public CreateRequestResource {
         if (type == null || type.isBlank()) throw new IllegalArgumentException("type is required");

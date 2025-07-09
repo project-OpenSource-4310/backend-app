@@ -48,7 +48,7 @@ public class Request extends AuditableModel {
         this.accepted = accepted;
     }
 
-    public Request updateInformation(String title, String description, Double budget, boolean accepted) {
+    public Request updateInformation(String title, String description, Double budget, Boolean accepted) {
         this.title = title;
         this.description = description;
         this.budget = budget;

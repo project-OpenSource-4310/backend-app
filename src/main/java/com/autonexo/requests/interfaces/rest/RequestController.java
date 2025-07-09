@@ -42,7 +42,7 @@ public class RequestController {
                 resource.vehicleId(),
                 resource.driverId(),
                 resource.mechanicId(),
-                resource.accepted()
+                false
         );
         var saved = requestRepository.save(request);
         return new ResponseEntity<>(saved, HttpStatus.CREATED);
@@ -90,5 +90,25 @@ public class RequestController {
         List<Request> requests = requestRepository.findByDriverId(driverId);
         if (requests.isEmpty()) return ResponseEntity.noContent().build();
         return ResponseEntity.ok(requests);
+    }
+
+    @PutMapping("/request/{requestId}")
+    @Operation(summary = "Update request by id", description = "Update request by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Request found"),
+            @ApiResponse(responseCode = "404", description = "Request not found")})
+    public ResponseEntity<Request> updateRequest(@RequestBody CreateRequestResource resource, @PathVariable Long requestId) {
+        Optional<Request> request = requestRepository.findById(requestId);
+        boolean accepted;
+        var requestUpdated = request.get();
+        if (resource.accepted().toLowerCase() == "true") {
+            accepted = true;
+        }
+        else {
+            accepted = false;
+        }
+        requestUpdated.updateInformation(resource.title(),resource.description(),resource.budget(), accepted);
+        var saved = requestRepository.save(requestUpdated);
+        return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }
 }
